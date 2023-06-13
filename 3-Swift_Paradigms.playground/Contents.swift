@@ -1,6 +1,6 @@
 // MARK: - Chapter 3: Swift Paradigm
 
-// MARK: - 3.1
+// MARK: - 3.1 Programming Paradigms
 // Swift <- Protocol Oriented Programming (P.O.P)
 // <- P.O.P utilizes processing units such as objects, structures n enumerations
 // protocols define how these processing units should behave or the type of functionality they provide.
@@ -92,3 +92,99 @@ func addThree(num: Int) -> Int {
 
 let seven = addThree(num: 4)
 
+// MARK: Listing 3-10 Modifying external variables from a function
+// The inout keyword is used to mark a parameter for which you want
+// to preserve/persist changes after the function is done executing.
+// COMPARE TO : Pass by refernce C++
+
+func hierToTheKindgom(){
+    var name = "Ahmedin"
+    addJuniorToName(for: &name) // pass arg using the ampersand (&)
+    print("Your updated name is \(name)")
+}
+
+func addJuniorToName(for name: inout String) {
+    name += " Jr."
+}
+
+hierToTheKindgom()
+
+// MARK: Listing 3-12 Removing argument labels
+func multiply(number1: Int, _ number2: Int) -> Int {
+    number1 * number2
+}
+
+let result = multiply(number1: 34, 2) // expect 68
+
+
+// MARK: Listing 3-13 Declaring Default values for params
+
+func greeting(message: String = "Good morning") -> String {
+    return "Hello there, \(message)"
+}
+
+let defaultGreeting = greeting()
+let specificGreeting = greeting(message: "How far")
+
+// MARK: - Generic Functions
+// Creating two or more functions with same name, diff params => Overloading
+
+// MARK: Listing 3-14 Declaring different functions with the same name
+func getDescription(value: Int) -> String{
+    "The value is \(value)"
+}
+
+func getDescription(value: String) -> String{
+    "The value is \(value)"
+} // String overload of getDescription()
+
+let intDesc = getDescription(value: 9)
+let strDesc = getDescription(value: "Helium")
+
+// NB: The above is difficult to maintain since they just differ by param type.
+// Solution: Generic Data Type
+
+// MARK: Listing 3-15 Defining generic functions
+// Generic Data types are placeholders for real data types.
+// When the function is called, the generic data type is turned into
+// the data type received.
+func getDescription<T>(value: T) -> String{
+    "The value is \(value)"
+}
+
+let genericDesc1 = getDescription(value: 3.4)
+let genericDesc2 = getDescription(value: "Aberdeen")
+
+// Generic Data Types can be constrained using protocols to accomodate certain operations
+// You can use two or more generic data types by seperating them by a comma, see below
+func personalGenericFunc<T, U>(value1: T, value2: U) -> String {
+    "Data type of \(value1) is \(type(of: value1))\nData type of \(value2) is \(type(of: value2))"
+}
+
+let testPersonalGenericFunc = personalGenericFunc(value1: true, value2: "Animal")
+print(testPersonalGenericFunc)
+
+// MARK: - Standard Functions
+// Functions available to stop the execution of the application incase of an unrecoverable error
+// fatalError(String) -> The function stops the execution of the application
+// and prints the String to the console
+let rank = 38
+//guard rank < 10 else {
+//    fatalError("\(rank) not part of top 10")
+//}
+
+// precondition(Bool, String) -> stops exection of the application and prints String if the Bool is false
+//precondition(rank < 10, "\(rank) not part of top 10")
+
+// MARK: Creating collections of values
+// few functions exist to quickly create sequences of values our app may need
+let sequenceText = repeatElement("Gotham", count: 4) // a sequence of Gotham repeated 4 times
+let sequenceNumbers = stride(from: 0, to: 8, by: 2) // a sequence containg 0 -> 10 stepped by 2, last element not included
+let combinedSequence = zip(sequenceText, sequenceNumbers) // combining the two sequences
+
+
+for (text, number) in combinedSequence {
+    print("\(text) - \(number)")
+}
+
+// MARK: - SCOPES
